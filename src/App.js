@@ -25,6 +25,8 @@ import ChatBotWidget from './ChatBotWidget';
 
 
 
+
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
@@ -89,6 +91,10 @@ function App() {
                 <Route path="/applicant-job-alerts" element={<ApplicantHomePage />} />
                 <Route path="/applicant-take-test" element={<ApplicantHomePage />} />
                 <Route path="/applicant-resume" element={<ApplicantHomePage />} />
+                <Route path="/applicant-hackathon" element={<ApplicantHomePage />} />
+                <Route path="/applicant-hackathon-details" element={<ApplicantHomePage/>}/>
+                <Route path="/applicant-all-hackathons" element={<ApplicantHomePage/>}/>
+                <Route path="/applicant-registered-hackathons" element={<ApplicantHomePage/>}/>
                 {/* <Route path="/verified-badges" component={VerifiedBadges} /> */}
                 <Route path="/applicant-verified-badges" element={<ApplicantHomePage />} />
                 <Route path="/applicant-resume-builder" element={<ApplicantHomePage />} />

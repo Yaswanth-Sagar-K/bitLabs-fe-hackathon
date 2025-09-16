@@ -1,0 +1,58 @@
+.stat-card {
+  border-radius: 12px;
+  transition: transform 0.2s ease;
+}
+.bg-orange-custom {
+  background-color: rgb(249, 115, 22) !important;
+}
+
+
+.icon-box {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0; /* keeps icons same size */
+}
+
+/* Orange background for the banner */
+.banner-card {
+  background-color: rgb(249, 115, 22); /* your custom orange */
+  border-radius: 16px;
+  margin: 10px;
+}
+
+/* Image styling */
+.banner-img {
+  max-width: 120px;
+}
+
+/* Hover effect for button */
+.banner-card .btn:hover {
+  background-color: #f3f4f6;
+}
+
+/* Orange register button */
+.btn-orange {
+  background-color: rgb(249, 115, 22);
+  color: white;
+  font-weight: 500;
+  border: none;
+}
+
+.btn-orange:hover {
+  background-color: rgb(220, 100, 15);
+  color: white;
+}
+
+/* Card styles */
+.hackathon-card {
+  border-radius: 12px;
+  transition: transform 0.2s ease-in-out;
+}
+
+
+
