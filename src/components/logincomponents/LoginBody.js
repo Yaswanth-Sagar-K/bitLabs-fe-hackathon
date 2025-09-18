@@ -324,15 +324,15 @@ function LoginBody({ handleLogin }) {
         }
 
         // ✅ Fetch Zoho User ID based on email
-        const zohoResponse = await axios.get(
-          `${apiUrl}/zoho/searchlead/${candidateEmail}`
-        );
-        const zohoUserId = zohoResponse.data?.data?.[0]?.id;
+        // const zohoResponse = await axios.get(
+        //   `${apiUrl}/zoho/searchlead/${candidateEmail}`
+        // );
+        // const zohoUserId = zohoResponse.data?.data?.[0]?.id;
 
-        if (zohoUserId) {
-          sessionStorage.setItem("zohoUserId", zohoUserId); // Store Zoho User ID in session
-          console.log("Zoho User ID:", zohoUserId);
-        }
+        // if (zohoUserId) {
+        //   sessionStorage.setItem("zohoUserId", zohoUserId); // Store Zoho User ID in session
+        //   console.log("Zoho User ID:", zohoUserId);
+        // }
 
         const profileIdResponse = await axios.get(
           `${apiUrl}/applicantprofile/${userId}/profileid`,

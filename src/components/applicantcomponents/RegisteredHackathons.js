@@ -8,7 +8,7 @@ const RegisteredHackathons = () => {
       organizer: "Stark Industries",
       date: "June 15, 2024",
       status: "Pending Submission",
-      statusType: "pending", // pending | judging | completed
+      statusType: "pending",
     },
     {
       id: 2,
