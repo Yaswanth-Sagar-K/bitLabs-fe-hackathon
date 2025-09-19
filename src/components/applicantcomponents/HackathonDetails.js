@@ -1,186 +1,173 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import "./hackathon.css";
+import { useUserContext } from "../common/UserProvider";
+import { apiUrl } from "../../services/ApplicantAPIService";
 
 const HackathonDetails = () => {
-  const hackathon = {
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_7dNYLrZTCGK3Qz0UNWQFrLL3ypKiNi1bFA&s",
-    title: "AI Innovation Challenge 2024",
-    description: `Join us for the most exciting AI innovation challenge of 2024! 
-    This hackathon brings together developers, designers, and AI enthusiasts 
-    from around the world to build revolutionary AI-powered applications.
-    
-    Participants will have access to cutting-edge AI tools, APIs, 
-    and mentorship from industry experts. Whether you're a beginner or an expert, 
-    this is your chance to push the boundaries of what's possible with AI.`,
-    instructions: [
-      "1. This should be done individually",
-      "2. Submit your project by the deadline",
-      "3. Include a working demo and source code",
-      "4. Present your solution to the judging panel",
-    ],
-    startDate: "Jan 15, 2024",
-    endDate: "Feb 15, 2024",
-    duration: "4 weeks",
-    participants: "1,245 registered",
+  const { id } = useParams();
+  const { user } = useUserContext();
+  const userId = user.id;
+  const [hackathon, setHackathon] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  };
+  useEffect(() => {
+    const fetchHackathon = async () => {
+      try {
+        const jwtToken = localStorage.getItem("jwtToken");
+        const response = await axios.get(
+          `${apiUrl}/api/hackathons/${id}/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${jwtToken}` },
+          }
+        );
+        setHackathon(response.data);
+      } catch (error) {
+        console.error("Error fetching hackathon details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHackathon();
+  }, [id, userId]);
+
+  if (loading) return <div className="loading">Loading...</div>;
+  if (!hackathon) return <div>No hackathon found.</div>;
+
+function toDateObject(value) {
+  if (!value) return null;
+  if (typeof value === "number") {
+    const d = new Date(value);
+    return isNaN(d) ? null : d;
+  }
+  if (value instanceof Date) {
+    return isNaN(value) ? null : value;
+  }
+  if (Array.isArray(value)) {
+    const [year, month, day, hour = 0, minute = 0, second = 0, nano = 0] = value;
+    const ms = Math.floor((nano || 0) / 1_000_000);
+    const d = new Date(year, (month || 1) - 1, day || 1, hour, minute, second, ms);
+    return isNaN(d) ? null : d;
+  }
+  if (typeof value === "string") {
+    const d = new Date(value);
+    return isNaN(d) ? null : d;
+  }
+
+  return null;
+}
+
+function formatToDateString(val) {
+  const d = toDateObject(val);
+  return d ? d.toDateString() : "Invalid date";
+}
+
 
   return (
     <div className="dashboard__content">
       <div className="row mr-0 ml-10">
         <div className="col-lg-12 col-md-12">
-          <div className="page-title-dashboard">
-            <div className="title-dashboard">
-              <div className="userName-title">
-                AI Innovation Challenge 2024
+          <section className="page-title-dashboard">
+            <div className="themes-container">
+              <div className="row align-center-space">
+                <div className="col-lg-12 col-md-12">
+                  <div className="title-filter-wrapper">
+                    <div className="title-dash">{hackathon.title}</div>
+                  </div>
+                </div>
               </div>
             </div>
+          </section>
+
+          {/* Banner + Status Badge Overlay */}
+          <div className="banner-wrapper">
+            <img
+              src={hackathon.bannerUrl}
+              alt={hackathon.title}
+              className="hackathon-banner"
+              onError={(e) =>
+                (e.target.src =
+                  "https://via.placeholder.com/600x300?text=No+Image")
+              }
+            />
+            <span
+              className={`status-badge ${hackathon.status.toLowerCase()}`}
+            >
+              {hackathon.status}
+            </span>
           </div>
+<div className="card">
+          <section>
+            <h3>Description</h3>
+            <p>{hackathon.description}</p>
+          </section>
+
+          <section>
+            <h3>Instructions</h3>
+            <ul>
+              {hackathon.instructions.split("\n").map((line, index) => (
+                <li key={index}>{line.replace(/^\d+\.\s*/, "")}</li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Side by side Eligibility & Technologies */}
+<div className="row side-by-side-section">
+  <div className="col-md-6">
+    <section>
+      <h3>Eligibility Criteria</h3>
+      <div className="tag-list">
+        {hackathon.eligibility.split(",").map((item, index) => (
+          <span key={index} className="tag">
+            {item.trim()}
+          </span>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <div className="col-md-6">
+    <section>
+      <h3>Technologies to Use</h3>
+      <div className="tag-list">
+        {hackathon.allowedTechnologies.split(",").map((tech, index) => (
+          <span key={index} className="tag tech-tag">
+            {tech.trim()}
+          </span>
+        ))}
+      </div>
+    </section>
+  </div>
+</div>
+
+
+          <section className="info-box">
+            <div>
+  <strong>Start Date</strong>
+  <p>{formatToDateString(hackathon.startAt)}</p>
+</div>
+<div>
+  <strong>End Date</strong>
+  <p>{formatToDateString(hackathon.endAt)}</p>
+</div>
+<div>
+  <strong>Organized By</strong>
+  <p>{hackathon.company}</p>
+</div>
+<div>
+  <strong>Created Date</strong>
+  <p>{formatToDateString(hackathon.createdAt)}</p>
+</div>
+
+          </section>
+           <div className="newCard-footer register">
+          <button className="view-button">Register</button></div>
+</div>
         </div>
-        <div className="hackathon-banner">
-          <img
-            src={hackathon.img}
-            alt={hackathon.title}
-            className="hackathon-image"
-          />
-        </div>
-        <div className="hackathon-container">
-          {/* Left Content */}
-          <div className="hackathon-left">
-            <div className="card">
-              <h3>Description</h3>
-              <p>{hackathon.description}</p>
-            </div>
-
-            <div className="card">
-              <h3>Instructions</h3>
-              <ul>
-                {hackathon.instructions.map((inst, index) => (
-                  <li key={index}>{inst}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="hackathon-right">
-            <div className="card">
-              <h4>Timeline</h4>
-              <p><strong>Start Date:</strong> {hackathon.startDate}</p>
-              <p><strong>End Date:</strong> {hackathon.endDate}</p>
-              <p><strong>Duration:</strong> {hackathon.duration}</p>
-
-              <p><strong>{hackathon.participants}</strong></p>
-
-
-              <div className="resumecard-button">
-                <Link
-                  to="#"
-                  className="button-link1"
-                >
-                  <span
-                    className="button button-custom"
-                  >
-                    Register
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* CSS Styling */}
-          <style>
-            {`
-            .hackathon-banner {
-            width: 100%;
-           
-            height: 10%;
-          }
-
-          .hackathon-image {
-            width: 100%;
-            aspect-ratio: 3 / 1; 
-            border-radius: 10px;
-            object-fit: cover;
-          }
-
-          .hackathon-container {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-          }
-
-          .hackathon-left {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-          }
-
-          .hackathon-right {
-            flex: 1;
-          }
-
-          .card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-          }
-
-          h3, h4 {
-            margin-bottom: 12px;
-            color: #333;
-          }
-
-          p {
-            margin: 8px 0;
-            color: #555;
-            line-height: 1.6;
-          }
-
-          ul {
-            padding-left: 20px;
-          }
-
-          li {
-            margin-bottom: 8px;
-            color: #444;
-          }
-
-          .prize {
-            color: #f97316;
-            font-size: 20px;
-            font-weight: bold;
-          }
-
-          .note {
-            color: #777;
-            font-size: 14px;
-          }
-
-          .register-btn {
-            margin-top: 15px;
-            width: 100%;
-            padding: 12px;
-            background-color: #f97316;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-          }
-
-          .register-btn:hover {
-            background-color: #ea580c;
-          }
-        `}
-          </style>
-        </div>
-      </div></div>
+      </div>
+    </div>
   );
 };
 

@@ -3,6 +3,7 @@ import "./hackathon.css";
 import { apiUrl } from "../../services/ApplicantAPIService";
 import axios from "axios";
 import { useUserContext } from '../common/UserProvider';
+import { useNavigate } from "react-router-dom";
 
 const Hackathon = () => {
   const [hackathons, setHackathons] = useState([]);
@@ -10,9 +11,10 @@ const Hackathon = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [statusFilter, setStatusFilter] = useState("ALL");
-  const [loading, setLoading] = useState(false); // loader state
+  const [loading, setLoading] = useState(false); 
   const { user } = useUserContext();
   const userId = user.id;
+  const navigate = useNavigate();
 
   const getLabel = (field) => {
     switch (field) {
@@ -70,6 +72,10 @@ const Hackathon = () => {
     if (searchQuery.trim() === "" || searchField === "all") return true;
     return h[searchField]?.toString().toLowerCase().includes(searchQuery.toLowerCase());
   });
+
+   const handleViewClick = (hackathonId) => {
+    navigate(`/applicant-hackathon-details/${hackathonId}`);
+  };
 
   return (
     <div className="dashboard__content">
@@ -160,7 +166,7 @@ const Hackathon = () => {
               let remainingText = "";
               if (hackathon.status === "ACTIVE") {
                 const diffDays = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
-                remainingText = diffDays > 0 ? `Ends in ${diffDays} days` : "Ended";
+                remainingText = diffDays > 0 ? `Ends in ${diffDays} days` : "Ends today";
               } else if (hackathon.status === "UPCOMING") {
                 const diffDays = Math.ceil((startDate - today) / (1000 * 60 * 60 * 24));
                 remainingText = diffDays > 0 ? `Starts in ${diffDays} days` : "Starting soon";
@@ -190,7 +196,7 @@ const Hackathon = () => {
 
                   <div className="newCard-footer">
                     <p className="remaining">{remainingText}</p>
-                    <button className="view-button">View</button>
+                    <button className="view-button" onClick={() => handleViewClick(hackathon.id)}>View</button>
                   </div>
                 </div>
               );

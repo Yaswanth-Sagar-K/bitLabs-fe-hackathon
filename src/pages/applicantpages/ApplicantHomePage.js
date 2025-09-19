@@ -6,7 +6,7 @@ import ApplicantNavBar from '../../components/applicantcomponents/ApplicantNavBa
 import ApplicantDashboard from '../../components/applicantcomponents/ApplicantDashboard';
 import ApplicantUpdateProfile from '../../components/applicantcomponents/ApplicantUpdateProfile';
 import ApplicantViewProfile from '../../components/applicantcomponents/ApplicantViewProfile';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate,  useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ApplicantFindJobs from '../../components/applicantcomponents/ApplicantFindJobs';
 import ApplicantViewJob from '../../components/applicantcomponents/ApplicantViewJob';
@@ -34,6 +34,7 @@ function ApplicantHomePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useUserContext();
+  const { id } = useParams();
   const userId = user.id;
   useEffect(() => {
 
@@ -121,7 +122,7 @@ function ApplicantHomePage() {
       case '/applicant-hackathon':
         setActiveRoute('hackathon')
         break;
-      case '/applicant-hackathon-details':
+      case `/applicant-hackathon-details/${id}`:
         setActiveRoute('hackDetails');
         break;
       case '/applicant-all-hackathons':
