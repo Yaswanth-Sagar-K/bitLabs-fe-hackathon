@@ -297,8 +297,8 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-section h3 {
-  font-size: 16px;
+.hackDes section h3 {
+  font-size: 20px;
   margin: 25px 0 12px;
   border-left: 4px solid #ff6600;
   padding-left: 10px;
@@ -306,17 +306,17 @@ section h3 {
 }
 
 /* Description */
-section p {
+.hackDes section p {
   font-size: 16px;
   line-height: 1.6;
 }
 
 /* Instructions */
-section ul {
+.hackDes section ul {
   list-style: disc;
   padding-left: 20px;
 }
-section ul li {
+.hackDes section ul li {
   margin-bottom: 6px;
   font-size: 15px;
 }
@@ -409,4 +409,104 @@ section ul li {
   font-weight: 600;
   color: #fff;
   text-transform: uppercase;
+}
+
+
+/* Page Title Styling */
+.page-title-dashboard .title-dash {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+/* Instruction Text */
+.text-gray-500 {
+  color: #6b7280;
+  text-align: center;
+}
+
+.text-sm {
+  font-size: 0.95rem;
+}
+
+/* Form Styling */
+form.space-y-4 {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 1.5rem;
+}
+
+/* Form Labels */
+label {
+  font-size: 0.96rem;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+/* Form Input and Textarea Styling */
+input[type="text"], input[type="url"], input[type="date"], textarea {
+  background: #f6f6f6;
+  border: 1px solid #e5e7eb;
+  padding: 0.85rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  width: 100%;
+  resize: none;
+  transition: box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffa756;
+  border-color: #ffa756;
+}
+
+/* Textarea Specific Styles */
+textarea {
+  min-height: 70px;
+  height: 70px;
+  max-height: 160px;
+}
+
+/* Submit Button Styles */
+button[type="submit"] {
+  background: #ffa756;
+  color: #fff;
+  font-size: 1.16rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 0;
+  margin-top: 1.4rem;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.18s;
+}
+
+button[type="submit"]:hover {
+  background: #ff8f1f;
+}
+
+/* Disabled State */
+button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Success/Fail Message Style */
+.text-center.text-sm.font-medium {
+  font-size: 1.02rem;
+  color: #ffa756;
+  font-weight: 500;
+  margin-top: 1.2rem;
+}
+
+.widthsize{
+  width: 50%;
 }

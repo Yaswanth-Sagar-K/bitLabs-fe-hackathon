@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./hackathon.css";
 import { useUserContext } from "../common/UserProvider";
@@ -11,6 +11,11 @@ const HackathonDetails = () => {
   const userId = user.id;
   const [hackathon, setHackathon] = useState(null);
   const [loading, setLoading] = useState(true);
+   const navigate = useNavigate();
+
+    const handleClick = () => {
+    navigate(`/applicant-submit-hackathon/${id}`);
+  };
 
   useEffect(() => {
     const fetchHackathon = async () => {
@@ -98,7 +103,7 @@ function formatToDateString(val) {
               {hackathon.status}
             </span>
           </div>
-<div className="card">
+<div className="card hackDes">
           <section>
             <h3>Description</h3>
             <p>{hackathon.description}</p>
@@ -163,7 +168,7 @@ function formatToDateString(val) {
 
           </section>
            <div className="newCard-footer register">
-          <button className="view-button">Register</button></div>
+          <button className="view-button" onClick={handleClick}>Register</button></div>
 </div>
         </div>
       </div>
