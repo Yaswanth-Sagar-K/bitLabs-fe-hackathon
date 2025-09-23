@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./hackathon.css";
+import BackButton from "../common/BackButton";
 
 const ProjectSubmissionForm = ({ hackathonId }) => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ const ProjectSubmissionForm = ({ hackathonId }) => {
               <div className="row align-center-space">
                 <div className="col-lg-12 col-md-12">
                   <div className="title-filter-wrapper">
-                    <div className="title-dash">Submit Your Project</div>
+                    <div className="title-dash flex2"><BackButton /> Submit Your Project</div>
                   </div>
                 </div>
               </div>

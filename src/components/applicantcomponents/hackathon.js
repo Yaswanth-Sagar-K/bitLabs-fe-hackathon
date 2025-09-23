@@ -40,28 +40,43 @@ const Hackathon = () => {
   };
 
   const fetchHackathons = async (tabKey) => {
-    try {
-      setLoading(true);
-      const jwtToken = localStorage.getItem("jwtToken");
-      const response = await axios.get(getApiUrlByTab(tabKey), {
-        headers: { Authorization: `Bearer ${jwtToken}` },
-      });
+  try {
+    setLoading(true);
+    const jwtToken = localStorage.getItem("jwtToken");
+    const response = await axios.get(getApiUrlByTab(tabKey), {
+      headers: { Authorization: `Bearer ${jwtToken}` },
+    });
 
-      const data = response.data;
-      const normalized = data.map((h) => ({
-        ...h,
-        startAt: h.startAt ? h.startAt.join("-") : null,
-        endAt: h.endAt ? h.endAt.join("-") : null,
-      }));
+    const data = response.data;
 
-      setHackathons(normalized);
-    } catch (error) {
-      console.error("Error fetching hackathons:", error);
-      setHackathons([]);
-    } finally {
-      setLoading(false); 
-    }
-  };
+    // Normalize dates and sort descending by createdAt
+    const normalized = data
+      .map((h) => {
+        // Convert startAt, endAt, createdAt arrays to Date objects
+        const toDate = (arr) => {
+          if (!arr) return null;
+          const [year, month = 1, day = 1, hour = 0, minute = 0, second = 0, nano = 0] = arr;
+          return new Date(year, month - 1, day, hour, minute, second, Math.floor(nano / 1_000_000));
+        };
+
+        return {
+          ...h,
+          startAt: h.startAt ? toDate(h.startAt) : null,
+          endAt: h.endAt ? toDate(h.endAt) : null,
+          createdAt: h.createdAt ? toDate(h.createdAt) : null,
+        };
+      })
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); // descending order
+
+    setHackathons(normalized);
+  } catch (error) {
+    console.error("Error fetching hackathons:", error);
+    setHackathons([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchHackathons(statusFilter);
@@ -69,7 +84,11 @@ const Hackathon = () => {
 
 
   const filteredHackathons = hackathons.filter((h) => {
-    if (searchQuery.trim() === "" || searchField === "all") return true;
+    if (searchField === "all") {
+  return Object.values(h).some(val =>
+    val?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+  );
+}
     return h[searchField]?.toString().toLowerCase().includes(searchQuery.toLowerCase());
   });
 
@@ -79,80 +98,69 @@ const Hackathon = () => {
 
   return (
     <div className="dashboard__content">
-      <div className="row mr-0 ml-10">
-        <div className="col-lg-12 col-md-12">
-          <section className="page-title-dashboard">
-            <div className="themes-container">
-              <div className="row align-center-space">
-                <div className="col-lg-12 col-md-12">
-                  <div className="title-filter-wrapper">
-                    <div className="title-dash">Hackathon</div>
+      <div className="row mr-0 ml-10" style={{marginRight:'2%'}}>
+        
+<div className="header-container">
+  <div className="status-tabs">
+    {[
+      { key: "ALL", label: "Arena" },           // 🌍 All → Arena
+      { key: "RECOMMENDED", label: "Your Picks" }, // 🎯 Recommended → Your Picks
+      { key: "ACTIVE", label: "In Action" },   // 🔥 Active → In Action
+      { key: "UPCOMING", label: "On the Horizon" }, // ⏳ Upcoming → On the Horizon
+      { key: "COMPLETED", label: "Past Battles" }, // 🏁 Completed → Past Battles
+      { key: "MY", label: "My Arena" },        // 👤 My Hackathons → My Arena
+    ].map((tab) => (
+      <button
+        key={tab.key}
+        className={`tab ${statusFilter === tab.key ? "active" : ""}`}
+        onClick={() => setStatusFilter(tab.key)}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
 
-                    <div className="filter-section">
-                      <div
-                        className="filter-box custom-dropdown"
-                        onClick={() => setDropdownOpen(!dropdownOpen)}
-                      >
-                        {getLabel(searchField)}
-                        <span className="arrow">▼</span>
-                        {dropdownOpen && (
-                          <ul className="dropdown-list">
-                            {[
-                              { value: "all", label: "All" },
-                              { value: "title", label: "Title" },
-                              { value: "eligibility", label: "Eligibility" },
-                              { value: "allowedTechnologies", label: "Technologies" },
-                              { value: "startAt", label: "Start Date" },
-                              { value: "endAt", label: "End Date" },
-                            ].map((option) => (
-                              <li
-                                key={option.value}
-                                onClick={() => {
-                                  setSearchField(option.value);
-                                  setDropdownOpen(false);
-                                }}
-                              >
-                                {option.label}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-
-                      <div className="search-box">
-                        <input
-                          type="text"
-                          placeholder={`Search by ${getLabel(searchField)}`}
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <div className="status-tabs">
+  <div className="filter-section">
+    <div
+      className="filter-box custom-dropdown"
+      onClick={() => setDropdownOpen(!dropdownOpen)}
+    >
+      {getLabel(searchField)}
+      <span className="arrow">▼</span>
+      {dropdownOpen && (
+        <ul className="dropdown-list">
           {[
-            { key: "ALL", label: "All" },
-            { key: "RECOMMENDED", label: "Recommended" },
-            { key: "ACTIVE", label: "Active" },
-            { key: "UPCOMING", label: "Upcoming" },
-            { key: "COMPLETED", label: "Completed" },
-            { key: "MY", label: "My Hackathons" },
-          ].map((tab) => (
-            <button
-              key={tab.key}
-              className={`tab ${statusFilter === tab.key ? "active" : ""}`}
-              onClick={() => setStatusFilter(tab.key)}
+            { value: "all", label: "All" },
+            { value: "title", label: "Title" },
+            { value: "eligibility", label: "Eligibility" },
+            { value: "allowedTechnologies", label: "Technologies" },
+            { value: "startAt", label: "Start Date" },
+            { value: "endAt", label: "End Date" },
+          ].map((option) => (
+            <li
+              key={option.value}
+              onClick={() => {
+                setSearchField(option.value);
+                setDropdownOpen(false);
+              }}
             >
-              {tab.label}
-            </button>
+              {option.label}
+            </li>
           ))}
-        </div>
+        </ul>
+      )}
+    </div>
+
+    <div className="search-box">
+      <input
+        type="text"
+        placeholder={`Search by ${getLabel(searchField)}`}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+    </div>
+  </div>
+</div>
 
         {loading ? (
           <div className="loading"></div> 

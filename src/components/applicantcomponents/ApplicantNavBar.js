@@ -133,7 +133,7 @@ function ApplicantNavBar() {
   useEffect(() => {
     const handleResize = () => {
       setHamburgerClass('fa fa-bars');
-      setIsOpen(window.innerWidth >= 1302);
+      setIsOpen(window.innerWidth >= 1402);
     };
     window.addEventListener('resize', handleResize);
     $("#left-menu-btn").on("click", function (e) {
@@ -269,7 +269,7 @@ function ApplicantNavBar() {
             <div className="col-md-12">
               <div className="sticky-area-wrap">
                 <div className="header-ct-left">
-                  {window.innerWidth < 1400 && (
+                  {window.innerWidth < 2000 && (
                     <span id="hamburger" className={hamburgerClass} onClick={handleToggleMenu}></span>
 
                   )}
@@ -474,7 +474,7 @@ function ApplicantNavBar() {
 </svg>
 
                   </span>
-                  <span className="dash-titles">Hackathon</span>
+                  <span className="dash-titles">Innovation Arena</span>
                 </Link>
               </li>
 

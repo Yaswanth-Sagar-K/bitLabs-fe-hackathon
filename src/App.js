@@ -128,7 +128,7 @@ function App() {
           </Router>
         )}
       </UserProvider>
-      <ChatBotWidget />
+      {/* <ChatBotWidget /> */}
     </div>
   );
 }
