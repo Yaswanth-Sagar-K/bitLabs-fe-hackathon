@@ -10,7 +10,7 @@ const Hackathon = () => {
   const [searchField, setSearchField] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [statusFilter, setStatusFilter] = useState("MY");
   const [loading, setLoading] = useState(false); 
   const { user } = useUserContext();
   const userId = user.id;
@@ -34,8 +34,7 @@ const Hackathon = () => {
       case "UPCOMING": return `${apiUrl}/api/hackathons/upcoming`;
       case "COMPLETED": return `${apiUrl}/api/hackathons/completed`;
       case "MY": return `${apiUrl}/api/hackathons/applicant/${userId}`;
-      case "ALL":
-      default: return `${apiUrl}/api/hackathons/getAll`;
+      default: return `${apiUrl}/api/hackathons/applicant/${userId}`;
     }
   };
 
@@ -102,13 +101,12 @@ const Hackathon = () => {
         
 <div className="header-container">
   <div className="status-tabs">
-    {[
-      { key: "ALL", label: "Arena" },           // 🌍 All → Arena
-      { key: "RECOMMENDED", label: "Your Picks" }, // 🎯 Recommended → Your Picks
-      { key: "ACTIVE", label: "In Action" },   // 🔥 Active → In Action
-      { key: "UPCOMING", label: "On the Horizon" }, // ⏳ Upcoming → On the Horizon
-      { key: "COMPLETED", label: "Past Battles" }, // 🏁 Completed → Past Battles
-      { key: "MY", label: "My Arena" },        // 👤 My Hackathons → My Arena
+    {[        
+      { key: "MY", label: "My Arena" },       
+      { key: "RECOMMENDED", label: "Picks For You" },
+      { key: "ACTIVE", label: "In Action" },
+      { key: "UPCOMING", label: "On the Horizon" }, 
+      { key: "COMPLETED", label: "Past Battles" },
     ].map((tab) => (
       <button
         key={tab.key}

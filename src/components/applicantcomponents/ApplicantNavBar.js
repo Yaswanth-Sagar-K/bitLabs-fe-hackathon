@@ -15,13 +15,16 @@ import logos from '../../images/profileIcon.svg';
 import ApplicantTakeTest from './ApplicantTakeTest';
 
 function ApplicantNavBar() {
-  const [isOpen, setIsOpen] = useState(window.innerWidth >= 1302
-  );
+  const location = useLocation();
+  const hideSidebarRoutes = ["/applicant-hackathon", "/applicant-hackathon-details"];
+  const [isOpen, setIsOpen] = useState(
+  window.innerWidth >= 1302 &&  !hideSidebarRoutes.some(route => location.pathname.startsWith(route))
+);
+
   const { user } = useUserContext();
   const [imageSrc, setImageSrc] = useState('');
   const [alertCount, setAlertCount] = useState(0);
 
-  const location = useLocation();
   const [url, setUrl] = useState('');
   const [loginUrl, setLoginUrl] = useState('');
   const [loading, setLoading] = useState(true);
@@ -32,6 +35,7 @@ function ApplicantNavBar() {
   const [hamburgerClass, setHamburgerClass] = useState('fa fa-bars');
   const navigate = useNavigate();
   const frompath = location.state?.from;
+  const { pathname } = useLocation();
 
   const [showTestPopup, setShowTestPopup] = useState(false);
   const [testName, setTestName] = useState('');
@@ -39,6 +43,33 @@ function ApplicantNavBar() {
   const toggleSubAccount = () => {
     setIsSubAccountVisible(!isSubAccountVisible);
   };
+
+useEffect(() => {
+  const updateSidebarClasses = () => {
+    const shouldHide = hideSidebarRoutes.some(route =>
+      location.pathname === route || location.pathname.startsWith(route + "/")
+    );
+
+    if (window.innerWidth >= 1301 && !shouldHide) {
+      document.body.classList.add("open-sidebar");
+      document.body.classList.remove("close-sidebar");
+      document.body.classList.add("hide-hamburger");
+    } else {
+      document.body.classList.add("close-sidebar");
+      document.body.classList.remove("open-sidebar");
+      document.body.classList.remove("hide-hamburger");
+    }
+  };
+
+  window.addEventListener("resize", updateSidebarClasses);
+
+  // Run initially
+  updateSidebarClasses();
+
+  return () => window.removeEventListener("resize", updateSidebarClasses);
+}, [pathname]);
+
+
 
 
   const handleOutsideClick = (event) => {
@@ -130,50 +161,60 @@ function ApplicantNavBar() {
     setHamburgerClass('fa fa-bars');
   };
 
-  useEffect(() => {
+useEffect(() => {
     const handleResize = () => {
-      setHamburgerClass('fa fa-bars');
-      setIsOpen(window.innerWidth >= 1402);
+        const shouldHide = hideSidebarRoutes.some(route =>
+            pathname.startsWith(route)
+        );
+        if (shouldHide) {
+            setIsOpen(false);
+        } else {
+            setIsOpen(window.innerWidth >= 1302);
+        }
+        setHamburgerClass('fa fa-bars');
     };
-    window.addEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); 
+
     $("#left-menu-btn").on("click", function (e) {
-      e.preventDefault();
-      if ($("body").hasClass("sidebar-enable") == true) {
-        $("body").removeClass("sidebar-enable");
-        $.cookie("isButtonActive", "0");
-      } else {
-        $("body").addClass("sidebar-enable");
-        $.cookie("isButtonActive", "1");
-      }
-      1400 <= $(window).width()
-        ? $("body").toggleClass("show-job")
-        : $("body").removeClass("show-job");
-      var width = $(window).width();
-      if (width < 1400) {
-        $.cookie('isButtonActive', null);
-      }
+        e.preventDefault();
+        if ($("body").hasClass("sidebar-enable")) {
+            $("body").removeClass("sidebar-enable");
+            $.cookie("isButtonActive", "0");
+        } else {
+            $("body").addClass("sidebar-enable");
+            $.cookie("isButtonActive", "1");
+        }
+        if ($(window).width() >= 1400) {
+            $("body").toggleClass("show-job");
+        } else {
+            $("body").removeClass("show-job");
+            $.cookie('isButtonActive', null);
+        }
     });
     if ($.cookie("isButtonActive") == 1) {
-      $("body").addClass("sidebar-enable show-job");
+        $("body").addClass("sidebar-enable show-job");
     }
     fetch(`${apiUrl}/applicant-image/getphoto/${user.id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
-      },
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        },
     })
-      .then(response => response.blob())
-      .then(blob => {
+    .then(response => response.blob())
+    .then(blob => {
         const imageUrl = URL.createObjectURL(blob);
         setImageSrc(imageUrl);
-      })
-      .catch(error => {
-        console.error('Error fetching image URL:', error);
-        setImageSrc(null);
-      });
+    })
+    .catch(() => {
+        setImageSrc('../images/user/avatar/image-01.jpg');
+    });
+
     return () => {
-      window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
+        $("#left-menu-btn").off("click");
     };
-  }, [user.id]);
+}, [pathname, user.id]);
 
 
   const handleLogout = () => {

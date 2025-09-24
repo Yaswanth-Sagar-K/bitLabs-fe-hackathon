@@ -12,10 +12,9 @@
   border-radius: 12px;
 }
 
-/* Banner Section */
 .hackathon-banner-wrapper {
   width: 100%;
-  height: 300px; /* landscape orientation */
+  height: 300px; 
   overflow: hidden;
   border-radius: 16px;
   position: relative;

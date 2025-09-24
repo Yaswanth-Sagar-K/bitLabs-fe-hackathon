@@ -176,7 +176,7 @@ function toDateObject(value) {
     return new Date(year, month - 1, day, hour, minute, second, Math.floor(nano / 1_000_000));
   }
 
-  return new Date(value); // for string or timestamp
+  return new Date(value); 
 }
 
 function formatToDateString(value) {
@@ -188,7 +188,7 @@ function formatToDateString(value) {
 
   return (
     <div className="hackathon-page-wrapper" style={{ display: "flex", gap: "30px", width:"96%",  margin: "1% auto 0 auto"}}>
-      {/* Left Card: Hackathon Details */}
+
       <div
         className="hackathon-details-wrapper"
         style={{ flex: showForm ? 2 : 1, transition: "flex 0.3s" }}

@@ -170,7 +170,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
-@media (max-width: 1700px) {
+@media (max-width: 2000px) {
   .newCards-grid {
     grid-template-columns: repeat(6, 1fr);
   }
