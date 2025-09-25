@@ -1,17 +1,3 @@
-/* Wrapper */
-.title-filter-wrapper {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;            
-  flex-wrap: wrap;                
-  gap: 10px;
-}
-
-.title-dash {
-  font-size: 24px;
-  font-weight: bold;
-}
-
 .filter-section {
   display: flex;
   align-items: center;
@@ -21,7 +7,6 @@
   border-radius: 16px;
 }
 
-/* Custom dropdown */
 .custom-dropdown {
   position: relative;
   flex: 1;
@@ -42,7 +27,6 @@
   font-size: 12px;
 }
 
-/* Dropdown list */
 .dropdown-list {
   position: absolute;
   width: 150px;
@@ -72,7 +56,6 @@
   color: black;
 }
 
-/* Search box */
 .search-box {
   flex: 1;
   height: 42px;
@@ -98,11 +81,10 @@
   all: unset;
 }
 
-
 .status-tabs {
   display: flex;
   gap: 24px;
-  border-bottom: 1px solid #e0e0e0; /* thin line below tabs */
+  border-bottom: 1px solid #e0e0e0; 
   align-items: center;
   justify-content: center;
 }
@@ -110,9 +92,9 @@
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* or flex-start if you want both on left */
+  justify-content: space-between; 
   gap: 24px;
-    margin-top: 7%;
+    margin-top: 9%;
     width: 100%;
 }
 
@@ -130,7 +112,7 @@
 }
 
 .status-tabs .tab:hover {
-  color: #F46F16 ; /* darker hover */
+  color: #F46F16 ; 
 }
 
 .status-tabs .tab.active {
@@ -147,11 +129,10 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: #F46F16 ; /* orange underline */
+  background: #F46F16 ; 
   border-radius: 2px;
 }
 
-/* Responsive */
 @media screen and (max-width: 768px) {
   .filter-section {
     flex-direction: column;
@@ -165,7 +146,7 @@
 }
 
 .newCards-grid {
-  display: grid;/* Extra large: 5 newCards */
+  display: grid;
   gap: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -175,37 +156,77 @@
     grid-template-columns: repeat(6, 1fr);
   }
 }
-/* Large (max 1400px) -> 4 newCards */
 @media (max-width: 1400px) {
   .newCards-grid {
     grid-template-columns: repeat(5, 1fr);
   }
 }
 
-/* Medium (max 1200px) -> 3 newCards */
 @media (max-width: 1200px) {
   .newCards-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-/* Small (max 992px) -> 2 newCards */
 @media (max-width: 992px) {
   .newCards-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .header-container {
+    flex-direction: column;   
+    align-items: stretch;   
+    gap: 16px;
+    margin-top: 13%;
+  }
+
+  .status-tabs {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;          
+    gap: 30px;
+    justify-content: left;
+  }
+
+  .filter-section {
+    width: 100%;
+    display: flex;            
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .filter-box {
+    flex: 0 0 25%;           
+  }
+
+  .search-box {
+    flex: 1;                  
+  }
+
+  .search-box input {
+    width: 100%;              
+  }
 }
 
-/* Extra Small (max 768px) -> 1 newCard */
 @media (max-width: 768px) {
   .newCards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+   .header-container {
+  margin-top: 14%; 
+  }
 }
-
-  @media (max-width: 400px) {
+@media (max-width: 600px){
+  .header-container {
+  margin-top: 20%; 
+  }
+}
+  @media (max-width: 420px) {
   .newCards-grid {
     grid-template-columns: 1fr;
+  }
+  .header-container {
+  margin-top: 24%; 
   }}
 
 .newCard {
@@ -299,180 +320,6 @@
   margin: auto;
 }
 
-.hackathon-details {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 24px;
-  font-family: "Segoe UI", Arial, sans-serif;
-  color: #333;
-}
-
-.hackathon-title {
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  text-align: center;
-}
-
-.hackathon-banner {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.hackDes section h3 {
-  font-size: 20px;
-  margin: 25px 0 12px;
-  border-left: 4px solid #ff6600;
-  padding-left: 10px;
-  color: #222;
-}
-
-/* Description */
-.hackDes section p {
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* Instructions */
-.hackDes section ul {
-  list-style: disc;
-  padding-left: 20px;
-}
-.hackDes section ul li {
-  margin-bottom: 6px;
-  font-size: 15px;
-}
-
-/* Tags */
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.tag {
-  background: #f2f2f2;
-  border-radius: 30%;
-  padding: 6px 14px;
-  font-size: 14px;
-   font-weight: 500;
-}
-
-.tech-tag {
-  background: #fff0e6;
-  color: #F97316;
- 
-}
-
-/* Info Box */
-.info-box {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 25px 0;
-  background: #fff;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-}
-.info-box div strong {
-  display: block;
-  margin-bottom: 5px;
-  color:#F97316;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.info-box div p {
-  font-size: 15px;
-  margin: 0;
-  color: #666;
-}
-
-/* Register Button */
-.register-btn {
-  display: block;
-  width: 100%;
-  max-width: 220px;
-  margin: 25px auto;
-  background: #ff6600;
-  color: #fff;
-  padding: 14px 28px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(255, 102, 0, 0.2);
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-.register-btn:hover {
-  background: #e65c00;
-  transform: translateY(-2px);
-}
-
-/* Banner wrapper to position status badge */
-.banner-wrapper {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.banner-wrapper .status-badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  padding: 6px 14px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  text-transform: uppercase;
-}
-
-
-/* Page Title Styling */
-.page-title-dashboard .title-dash {
-  font-size: 1.5rem;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-/* Instruction Text */
-.text-gray-500 {
-  color: #6b7280;
-  text-align: center;
-}
-
-.text-sm {
-  font-size: 0.95rem;
-}
-
-/* Form Styling */
-form.space-y-4 {
-  display: flex;
-  flex-direction: column;
-  gap: 1.15rem;
-  margin-top: 1.5rem;
-}
-
-/* Form Labels */
-label {
-  font-size: 0.96rem;
-  color: #333;
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  display: block;
-}
-
-/* Form Input and Textarea Styling */
 input[type="text"], input[type="url"], input[type="date"], textarea {
   background: #f6f6f6;
   border: 1px solid #e5e7eb;
@@ -492,46 +339,77 @@ input:focus, textarea:focus {
   border-color: #ffa756;
 }
 
-/* Textarea Specific Styles */
 textarea {
   min-height: 70px;
   height: 70px;
   max-height: 160px;
 }
 
-/* Submit Button Styles */
-button[type="submit"] {
-  background: #ffa756;
-  color: #fff;
-  font-size: 1.16rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 0;
-  margin-top: 1.4rem;
+.newCard .registration-status {
+  display: flex;
+  align-items: center;
+  color: #F97316;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tick-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F97316;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+.tick-circle svg {
+  display: block;
+}
+
+.winner-card {
+  position: absolute;
+  bottom: 75px;
+  right: 15px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   cursor: pointer;
-  box-shadow: none;
-  transition: background 0.18s;
 }
 
-button[type="submit"]:hover {
-  background: #ff8f1f;
+.winner-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* Disabled State */
-button[type="submit"]:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.winner-name {
+  display: none;
+  position: absolute;
+  top: -28px; 
+  left: 50%;
+  transform: translateX(-50%);
+  background: orange;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: center;
 }
 
-/* Success/Fail Message Style */
-.text-center.text-sm.font-medium {
-  font-size: 1.02rem;
-  color: #ffa756;
-  font-weight: 500;
-  margin-top: 1.2rem;
-}
 
-.widthsize{
-  width: 50%;
+.winner-card:hover::after {
+  content: attr(data-name); /* dynamically add the name */
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: orange;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 100;
 }

@@ -51,19 +51,16 @@ useEffect(() => {
     );
 
     if (window.innerWidth >= 1301 && !shouldHide) {
-      document.body.classList.add("open-sidebar");
-      document.body.classList.remove("close-sidebar");
+     
       document.body.classList.add("hide-hamburger");
     } else {
       document.body.classList.add("close-sidebar");
-      document.body.classList.remove("open-sidebar");
       document.body.classList.remove("hide-hamburger");
     }
   };
 
   window.addEventListener("resize", updateSidebarClasses);
 
-  // Run initially
   updateSidebarClasses();
 
   return () => window.removeEventListener("resize", updateSidebarClasses);
@@ -149,7 +146,9 @@ useEffect(() => {
     setIsOpen(!isOpen);
     if (hamburgerClass === 'fa fa-bars') {
       setHamburgerClass('fa fa-arrow-left');
+      document.body.classList.remove("close-sidebar");
     } else {
+      document.body.classList.add("close-sidebar");
       setHamburgerClass('fa fa-bars');
     }
   };

@@ -1098,11 +1098,9 @@ tbody tr td:nth-child(2) {
 
 body.close-sidebar .dashboard.show .dashboard__content {
   margin-left: 0; 
+  margin-top: -2%;
 }
 
-body.open-sidebar .dashboard.show .dashboard__content {
-  margin-left: 320px !important; 
-}
 
 @media screen and (min-width: 700px) and (max-width: 1400px) {
     .hamburger-icon {

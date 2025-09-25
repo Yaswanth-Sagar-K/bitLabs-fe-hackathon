@@ -24,13 +24,13 @@ const HackathonDetails = () => {
     demoLink: "",
   });
   const [submitting, setSubmitting] = useState(false);
-   const addSnackbar = (snackbar) => {
+  const addSnackbar = (snackbar) => {
     setSnackbars((prevSnackbars) => [...prevSnackbars, snackbar]);
   };
 
   const handleCloseSnackbar = (index) => {
     setSnackbars((prevSnackbars) => prevSnackbars.filter((_, i) => i !== index));
-     
+
   };
 
   useEffect(() => {
@@ -127,22 +127,22 @@ const HackathonDetails = () => {
     const status = hackathon.status.toUpperCase();
 
     if (!registration) {
-  if (status === "UPCOMING" || status === "ACTIVE") {
-    return (
-      <button className="view-button hackathon-action-button" onClick={handleRegister}>
-        Register
-      </button>
-    );
-  }
+      if (status === "UPCOMING" || status === "ACTIVE") {
+        return (
+          <button className="view-button hackathon-action-button" onClick={handleRegister}>
+            Register
+          </button>
+        );
+      }
 
-  if (status === "COMPLETED") {
-    return (
-      <button className="view-button hackathon-action-button" disabled>
-        Not Registered
-      </button>
-    );
-  }
-}
+      if (status === "COMPLETED") {
+        return (
+          <button className="view-button hackathon-action-button" disabled>
+            Not Registered
+          </button>
+        );
+      }
+    }
 
 
     if (status === "COMPLETED") {
@@ -168,202 +168,247 @@ const HackathonDetails = () => {
     return null;
   };
 
-function toDateObject(value) {
-  if (!value) return null;
+  function toDateObject(value) {
+    if (!value) return null;
 
-  if (Array.isArray(value)) {
-    const [year, month = 1, day = 1, hour = 0, minute = 0, second = 0, nano = 0] = value;
-    return new Date(year, month - 1, day, hour, minute, second, Math.floor(nano / 1_000_000));
+    if (Array.isArray(value)) {
+      const [year, month = 1, day = 1, hour = 0, minute = 0, second = 0, nano = 0] = value;
+      return new Date(year, month - 1, day, hour, minute, second, Math.floor(nano / 1_000_000));
+    }
+
+    return new Date(value);
   }
 
-  return new Date(value); 
-}
-
-function formatToDateString(value) {
-  const date = toDateObject(value);
-  return date && !isNaN(date.getTime()) ? date.toDateString() : "Invalid date";
-}
+  function formatToDateString(value) {
+    const date = toDateObject(value);
+    return date && !isNaN(date.getTime()) ? date.toDateString() : "Invalid date";
+  }
 
 
 
-  return (
-    <div className="hackathon-page-wrapper" style={{ display: "flex", gap: "30px", width:"96%",  margin: "1% auto 0 auto"}}>
+  return (<div className="dashboard__content">
+    <div className="row mr-0 ml-10" style={{ marginRight: '2%' }}>
+      <div className="hackathon-page-wrapper" style={{ display: "flex", gap: "30px", width: "96%", margin: "3% auto 0 auto" }}>
 
-      <div
-        className="hackathon-details-wrapper"
-        style={{ flex: showForm ? 2 : 1, transition: "flex 0.3s" }}
-      >
-        <div className="hackathon-top-section">
-          <BackButton className="hackathon-back-button" />
-          <h1 className="hackathon-title">{hackathon.title}</h1>
-        </div>
-
-        <div className="hackathon-body">
-          <div className="hackathon-left-column">
-            <section>
-              <h3>Description</h3>
-              <p>{hackathon.description}</p>
-            </section>
-
-            {hackathon.instructions && hackathon.instructions.trim() !== "" && (
-              <section>
-                <h3>Instructions</h3>
-                <ul>
-                  {hackathon.instructions.split("\n").map((line, index) => (
-                    <li key={index}>{line.replace(/^\d+\.\s*/, "")}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            <div className="row side-by-side-section">
-              <div className="col-md-6">
-                <section>
-                  <h3>Eligibility Criteria</h3>
-                  <div className="hackathon-tag-list">
-                    {hackathon.eligibility.split(",").map((item, index) => (
-                      <span key={index} className="hackathon-tag">{item.trim()}</span>
-                    ))}
-                  </div>
-                </section>
-              </div>
-
-              <div className="col-md-6">
-                <section>
-                  <h3>Technologies to Use</h3>
-                  <div className="hackathon-tag-list">
-                    {hackathon.allowedTechnologies.split(",").map((tech, index) => (
-                      <span key={index} className="hackathon-tech-tag">{tech.trim()}</span>
-                    ))}
-                  </div>
-                </section>
-              </div>
-            </div>
-          </div>
-
-          <div className="hackathon-right-column">
-            <div className="hackathon-banner-wrapper">
-              <img
-                src={hackathon.bannerUrl}
-                alt={hackathon.title}
-                className="hackathon-banner"
-                onError={(e) => (e.target.src = "https://via.placeholder.com/900x300?text=No+Image")}
-              />
-              <span className={`hackathon-status-badge ${hackathon.status.toLowerCase()}`}>
-                {hackathon.status}
-              </span>
-            </div>
-            <section className="hackathon-info-box">
-              <div>
-                <h3>Organized By</h3>
-                <p>{hackathon.company}</p>
-              </div>
-              <div>
-  <h3>Created Date</h3>
-  <p>{formatToDateString(hackathon.createdAt)}</p>
-</div>
-<div>
-  <h3>Start Date</h3>
-  <p>{formatToDateString(hackathon.startAt)}</p>
-</div>
-<div>
-  <h3>End Date</h3>
-  <p>{formatToDateString(hackathon.endAt)}</p>
-</div>
-
-            </section>
-
-            <div className="newCard-footer">{renderActionButton()}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Card: Submit Form */}
-      {showForm && !registration.submitStatus && (
         <div
-          className="submit"
-          style={{
-            flex: 1,
-            padding: "20px",
-            border: "1px solid #ddd",
-            borderRadius: "10px",
-            background: "#fff",
-            maxHeight: "fit-content",
-            transition: "all 0.3s",
-            marginTop:"7%",
-          }}
+          className="hackathon-details-wrapper"
+          style={{ flex: showForm ? 2 : 1, transition: "flex 0.3s" }}
         >
-          <h3>Submit Your Project</h3>
-          <form onSubmit={handleFormSubmit}>
-            <div className="form-group">
-  <label className="required">Project Title</label>
-  <input
-    type="text"
-    name="projectTitle"
-    value={formData.projectTitle}
-    onChange={handleFormChange}
-    required
-  />
-</div>
-<div className="form-group">
-  <label className="required">Project Summary</label>
-  <textarea
-    name="projectSummary"
-    value={formData.projectSummary}
-    onChange={handleFormChange}
-    required
-  />
-</div>
-<div className="form-group">
-  <label className="required">Technologies Used</label>
-  <input
-    type="text"
-    name="technologiesUsed"
-    value={formData.technologiesUsed}
-    onChange={handleFormChange}
-    required
-  />
-</div>
-<div className="form-group">
-  <label className="required">GitHub Link</label>
-  <input
-    type="url"
-    name="githubLink"
-    value={formData.githubLink}
-    onChange={handleFormChange}
-    required
-  />
-</div>
-<div className="form-group">
-  <label>Demo Link</label> {/* no required class */}
-  <input
-    type="url"
-    name="demoLink"
-    value={formData.demoLink}
-    onChange={handleFormChange}
-  />
-</div>
+          <div className="hackathon-top-section">
+            <BackButton className="hackathon-back-button" />
+            <h1 className="hackathon-title">{hackathon.title}</h1>
+          </div>
 
-            <div className="newCard-footer">
-            <button className="view-button hackathon-action-button" type="submit" disabled={submitting}>
-              {submitting ? "Submitting..." : "Submit"}
-            </button></div>
-          </form>
+          <div className="hackathon-body">
+            <div className="hackathon-left-column">
+              <section>
+                <h3>Description</h3>
+                <p>{hackathon.description}</p>
+              </section>
+
+              {hackathon.instructions && hackathon.instructions.trim() !== "" && (
+                <section>
+                  <h3>Instructions</h3>
+                  <ul>
+                    {hackathon.instructions.split("\n").map((line, index) => (
+                      <li key={index}>{line.replace(/^\d+\.\s*/, "")}</li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
+              <div className="row side-by-side-section">
+                <div className="col-md-6">
+                  <section>
+                    <h3>Eligibility Criteria</h3>
+                    <div className="hackathon-tag-list">
+                      {hackathon.eligibility.split(",").map((item, index) => (
+                        <span key={index} className="hackathon-tag">{item.trim()}</span>
+                      ))}
+                    </div>
+                  </section>
+                </div>
+
+                <div className="col-md-6">
+                  <section>
+                    <h3>Technologies to Use</h3>
+                    <div className="hackathon-tag-list">
+                      {hackathon.allowedTechnologies.split(",").map((tech, index) => (
+                        <span key={index} className="hackathon-tech-tag">{tech.trim()}</span>
+                      ))}
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div className="hackathon-right-column">
+              <div className="hackathon-banner-wrapper">
+                <img
+                  src={hackathon.bannerUrl}
+                  alt={hackathon.title}
+                  className="hackathon-banner"
+                  onError={(e) => (e.target.src = "https://via.placeholder.com/900x300?text=No+Image")}
+                />
+                <span className={`hackathon-status-badge ${hackathon.status.toLowerCase()}`}>
+                  {hackathon.status}
+                </span>
+              </div>
+              <section className="hackathon-info-box">
+                <div>
+                  <h3>Organized By</h3>
+                  <p>{hackathon.company}</p>
+                </div>
+                <div>
+                  <h3>Created Date</h3>
+                  <p>{formatToDateString(hackathon.createdAt)}</p>
+                </div>
+                <div>
+                  <h3>Start Date</h3>
+                  <p>{formatToDateString(hackathon.startAt)}</p>
+                </div>
+                <div>
+                  <h3>End Date</h3>
+                  <p>{formatToDateString(hackathon.endAt)}</p>
+                </div>
+
+              </section>
+
+              <div className="newCard-footer">{renderActionButton()}</div>
+            </div>
+          </div>
         </div>
-      )}
 
-      {snackbars.map((snackbar) => (
-              <Snackbar
-                key={snackbar.id}
-                index={snackbar.id}
-                message={snackbar.message}
-                type={snackbar.type}
-                onClose={handleCloseSnackbar}
-                link={snackbar.link}
-                linkText={snackbar.linkText}
-              />
-            ))}
+        {showForm && !registration.submitStatus && (
+          <div
+            className="submit"
+            style={{
+              position: "relative",      
+              flex: 1,
+              padding: "20px",
+              border: "1px solid #ddd",
+              borderRadius: "10px",
+              background: "#fff",
+              maxHeight: "fit-content",
+              transition: "all 0.3s",
+              marginTop: "7%",
+            }}
+          >
+            <button
+              type="button"
+              className="close-btn"
+              onClick={() => setShowForm(false)} 
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "transparent",
+                border: "none",
+                fontSize: "20px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                color: "#666",
+                fontSize: "28px", 
+              }}
+            >
+              ×
+            </button>
+            <h3>Submit Your Project</h3>
+            <form onSubmit={handleFormSubmit}>
+              <div className="form-group">
+                <label className="required">Project Title</label>
+                <input
+                  type="text"
+                  name="projectTitle"
+                  value={formData.projectTitle}
+                  onChange={handleFormChange}
+                  required
+                  minLength={5}
+                  maxLength={100}
+                  placeholder={hackathon?.title ? `${hackathon.title}` : "Enter a project title"}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="required">Project Summary</label>
+                <textarea
+                  name="projectSummary"
+                  value={formData.projectSummary}
+                  onChange={handleFormChange}
+                  required
+                  minLength={20}
+                  maxLength={1000}
+                  placeholder="Brefily explain your project"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="required">Technologies Used</label>
+                <input
+                  type="text"
+                  name="technologiesUsed"
+                  value={formData.technologiesUsed}
+                  onChange={handleFormChange}
+                  required
+                  minLength={1}
+                  maxLength={100}
+                  placeholder="Eg: C, Java"
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="required">GitHub Link</label>
+                <input
+                  type="url"
+                  name="githubLink"
+                  value={formData.githubLink}
+                  onChange={handleFormChange}
+                  required
+                  placeholder="Enter a valid GitHub repository URL"
+                  pattern="https?://.+"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Demo Link</label>
+                <input
+                  type="url"
+                  name="demoLink"
+                  value={formData.demoLink}
+                  onChange={handleFormChange}
+                  placeholder="Enter a valid demo URL (optional)"
+                  pattern="https?://.+"
+                />
+              </div>
+
+              <div className="newCard-footer">
+                <button
+                  className="view-button hackathon-action-button"
+                  type="submit"
+                  disabled={submitting}
+                >
+                  {submitting ? "Submitting..." : "Submit"}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+
+        {snackbars.map((snackbar) => (
+          <Snackbar
+            key={snackbar.id}
+            index={snackbar.id}
+            message={snackbar.message}
+            type={snackbar.type}
+            onClose={handleCloseSnackbar}
+            link={snackbar.link}
+            linkText={snackbar.linkText}
+          />
+        ))}
+      </div>
     </div>
+  </div>
   );
 };
 

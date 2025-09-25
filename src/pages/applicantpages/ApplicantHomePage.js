@@ -24,8 +24,6 @@ import ApplicantTakeTest from '../../components/applicantcomponents/ApplicantTak
 import VerifiedBadges from '../../components/applicantcomponents/VerifiedBadges';
 import Hackathon from '../../components/applicantcomponents/hackathon';
 import HackathonDetails from '../../components/applicantcomponents/HackathonDetails';
-import RegisteredHackathons from '../../components/applicantcomponents/RegisteredHackathons';
-import ProjectSubmissionForm from '../../components/applicantcomponents/HackathonSubmit';
 
 
 function ApplicantHomePage() {
@@ -125,12 +123,6 @@ function ApplicantHomePage() {
       case `/applicant-hackathon-details/${id}`:
         setActiveRoute('hackDetails');
         break;
-      case '/applicant-registered-hackathons':
-        setActiveRoute('regHack');
-        break;
-        case `/applicant-submit-hackathon/${id}`:
-        setActiveRoute('submitHack')
-        break;
       default:
         setActiveRoute('');
         break;
@@ -162,8 +154,6 @@ function ApplicantHomePage() {
       {activeRoute === 'badges' && <VerifiedBadges />}
       {activeRoute === 'hackathon' && <Hackathon />}
       {activeRoute === 'hackDetails' && <HackathonDetails />}
-      {activeRoute === 'regHack' && <RegisteredHackathons />}
-      {activeRoute === 'submitHack' && <ProjectSubmissionForm />}
     </div>
   )
 }
