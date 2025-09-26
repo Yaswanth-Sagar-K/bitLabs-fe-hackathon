@@ -68,8 +68,7 @@ const Hackathon = () => {
 
       setHackathons(normalized);
 
-      // NEW: Fetch winners if COMPLETED tab
-      if (tabKey === "COMPLETED") {
+      if (tabKey === "COMPLETED" || tabKey === "MY") {
         const winnerIds = [...new Set(normalized.map(h => h.winner).filter(Boolean))];
         if (winnerIds.length > 0) {
           const winnersResponse = await axios.post(
@@ -236,18 +235,29 @@ const Hackathon = () => {
                     )}
                   </div>
 
-                  {statusFilter === "COMPLETED" && winnerInfo && (
-                    <div className="winner-card"
-                      data-name={`${winnerInfo.firstName} ${winnerInfo.lastName}`}>
-                      <img
-                        src={winnerInfo.imageUrl || "../images/user/avatar/image-01.jpg"}
-                        alt={`${winnerInfo.firstName} ${winnerInfo.lastName}`}
-                      />
-                      <span className="winner-name">
-                        {winnerInfo.firstName} {winnerInfo.lastName}
-                      </span>
-                    </div>
-                  )}
+                 {(statusFilter === "COMPLETED" || statusFilter === "MY") && winnerInfo?.firstName && winnerInfo?.lastName && (
+  <div className="winner-card" data-name={`${winnerInfo.firstName} ${winnerInfo.lastName}`}>
+    <div className="winner-card-content">
+      <img
+        src={winnerInfo.imageUrl || "../images/user/avatar/image-01.jpg"}
+        alt={`${winnerInfo.firstName} ${winnerInfo.lastName}`}
+        className="winner-image"
+      />
+    </div>
+    <div className="winner-overlay">
+      <h4 className="winner-heading">Top Performer</h4>
+      <img
+        src={winnerInfo.imageUrl || "../images/user/avatar/image-01.jpg"}
+        alt={`${winnerInfo.firstName} ${winnerInfo.lastName}`}
+        className="winner-image-overlay"
+      />
+      <span className="winner-name">
+        {winnerInfo.firstName} {winnerInfo.lastName}
+      </span>
+    </div>
+  </div>
+)}
+
 
                   <div className="newCard-footer">
                     <p className="remaining">{remainingText}</p>

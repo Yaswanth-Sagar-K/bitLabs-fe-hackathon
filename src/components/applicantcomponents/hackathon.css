@@ -370,46 +370,78 @@ textarea {
 
 .winner-card {
   position: absolute;
-  bottom: 75px;
+  inset: 0; 
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+ pointer-events: none; 
+}
+
+.winner-card-content {
+  position: absolute;
+  bottom: 65px;
   right: 15px;
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  overflow: hidden;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
 
-.winner-card img {
+.winner-card-content img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  transition: all 0.3s ease-in-out;
 }
 
-.winner-name {
-  display: none;
+.winner-overlay {
   position: absolute;
-  top: -28px; 
-  left: 50%;
-  transform: translateX(-50%);
-  background: orange;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-  text-align: center;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  border-radius: 12px;
+  opacity: 0;
+  pointer-events: none; 
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.winner-overlay .winner-heading {
+  font-size: 16px;
+  font-weight: bold;
+  color: #F97316; 
+  margin-bottom: 8px;
+  text-transform: uppercase;
 }
 
 
-.winner-card:hover::after {
-  content: attr(data-name); /* dynamically add the name */
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: orange;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  z-index: 100;
+.winner-overlay img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  margin-bottom: 12px;
+}
+
+.winner-overlay .winner-name {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.winner-card-content:hover ~ .winner-overlay,
+.winner-overlay:hover {
+  opacity: 1;
+  pointer-events: auto; 
 }
